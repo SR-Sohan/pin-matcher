@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pin Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="alert-area justify-content-center"> 
+        <div id="alert" class="alert text-white"> 
+            <h4 class="text-heading text-danger">Warinng!</h4>
+            <p class="text-paragrap">Please Create Generate Number</p>
+            <a class="ok-btn" href="#">OK</a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="welcome-section text-center"> 
+                   <div class="welcome-round d-flex justify-content-center aligns-item-center"> 
+                    <h3 class=" text-white">Welcome</h3>
+                   </div>
+                </div>
+                <div class="pin-generator half-width">
+                    <input id="generate-display" class="form-control" type="text">
+                    <button class="generate-btn">Generate Pin</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-section half-width">
+                    <input id="match-display" class="form-control" type="text">
+                    <div class="numbers">
+                        <div class="calc-body">
+                            <div class="calc-button-row">
+                              <div onclick="matchGetNumber(this.innerText)" class="button">7</div>
+                              <div onclick="matchGetNumber(this.innerText)" class="button">8</div>
+                              <div onclick="matchGetNumber(this.innerText)" class="button">9</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div onclick="matchGetNumber(this.innerText)" class="button">4</div>
+                              <div onclick="matchGetNumber(this.innerText)" class="button">5</div>
+                              <div onclick="matchGetNumber(this.innerText)" class="button">6</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div onclick="matchGetNumber(this.innerText)" class="button">1</div>
+                              <div onclick="matchGetNumber(this.innerText)" class="button">2</div>
+                              <div onclick="matchGetNumber(this.innerText)" class="button">3</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div onclick="clearAndBackSpace(this.innerText)"  class="button"><</div>
+                                <div onclick="matchGetNumber(this.innerText)" class="button">0</div>
+                                <div onclick="clearAndBackSpace(this.innerText)" class="button">C</div>
+                            </div>
+                            <div>
+                                <button id="submit-btn" onclick="submit()" type="submit" class="submit-btn">Submit</button>
+                                <p class="action-left"> <span id="try-count">3</span>  try left</p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="notify-section">
+            <p id="error-notify" class="notify">❌ Pin Didn't Match, Please try again</p>
+            <p id="success-notify" class="notify">✅ Pin Matched... Secret door is opening for you</p>
+        </div>
+    </div>
+    <script> 
+       
+        // Code Generate Button
+        document.querySelector('.generate-btn').addEventListener('click',function(){ 
+            let generateCode = Math.floor(1000 + Math.random() * 9000);
+            document.getElementById('generate-display').value = generateCode;
+        })
+
+        // Match display Function
+        function matchGetNumber(number){ 
+            let matchNumber = number;
+            let matchDisplayNumber = document.getElementById('match-display');
+            let matchDisplayValue = matchDisplayNumber.value;
+            if(matchDisplayValue.length < 4){ 
+                document.getElementById('match-display').value += matchNumber;
+            }
+        }
+
+        // Clear And BackSpace Button Function
+        function clearAndBackSpace(clearInput){ 
+            let matchDisplayNumber = document.getElementById('match-display');
+            let matchDisplayValue = matchDisplayNumber.value;
+
+            if(clearInput === "C"){ 
+                document.getElementById('match-display').value = '';
+            }
+            if(clearInput == "<"){
+                document.getElementById('match-display').value = matchDisplayValue.slice(0, -1);
+            }
+        }
+
+        // Submit Button Function
+        function submit(){ 
+            let generateDisplayNumber = document.getElementById('generate-display');
+            let generateDisplayValue = generateDisplayNumber.value;
+
+            let matchDisplayNumber = document.getElementById('match-display');
+            let matchDisplayValue = matchDisplayNumber.value;
+
+           
+            if( generateDisplayValue == matchDisplayValue && generateDisplayValue != ''){ 
+                document.getElementById('success-notify').style.display = 'block';
+                document.getElementById('error-notify').style.display = 'none';
+                document.getElementById('match-display').value = '';
+                document.getElementById('generate-display').value = '';
+
+                document.getElementById('try-count').innerText = 3;
+
+                document.querySelector('.pin-generator').style.marginTop = '-650px';
+                document.querySelector('.welcome-section').style.left = '-15px';
+               
+            }else{ 
+                document.getElementById('error-notify').style.display = 'block';
+                document.getElementById('success-notify').style.display = 'none';
+
+                let tryCount = document.getElementById('try-count');
+                let tryCountValue = tryCount.innerText;
+
+                if(tryCountValue > 0 ){ 
+                    document.getElementById('try-count').innerText = tryCountValue -1;
+                }
+                if(tryCountValue == 1){ 
+                    document.getElementById('submit-btn').style.background = 'red';
+                    document.getElementById('submit-btn').disabled = true;
+                }
+            }
+            if(generateDisplayValue== ''){ 
+                document.getElementById('alert').style.marginTop = '30px';
+                document.getElementById('success-notify').style.display = 'none';
+                document.getElementById('error-notify').style.display = 'none';
+            }
+            else if(matchDisplayValue== ''){ 
+                document.querySelector('.text-paragrap').innerText = 'Plase Input Match Number';
+                document.getElementById('alert').style.marginTop = '30px';
+                document.getElementById('success-notify').style.display = 'none';
+                document.getElementById('error-notify').style.display = 'none';
+            }
+
+        }
+        // Ok notification btn
+        document.querySelector('.ok-btn').addEventListener('click',function(){ 
+           document.getElementById('alert').style.marginTop = '-180px';
+        })
+      
+    </script>
+</body>
+</html>
