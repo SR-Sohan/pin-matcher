@@ -8,13 +8,16 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- alert section  -->
     <div class="alert-area justify-content-center"> 
         <div id="alert" class="alert text-white"> 
             <h4 class="text-heading text-danger">Warinng!</h4>
             <p class="text-paragrap">Please Create Generate Number</p>
             <a class="ok-btn" href="#">OK</a>
         </div>
-    </div>
+    </div><!-- End alert section  -->
+
+    <!-- Main Seciton -->
     <div class="container">
         <div class="row">
             <div class="col-md-6">
@@ -60,11 +63,12 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> <!-- End Main Seciton -->
+        <!-- Notification Section -->
         <div class="notify-section">
             <p id="error-notify" class="notify">❌ Pin Didn't Match, Please try again</p>
             <p id="success-notify" class="notify">✅ Pin Matched... Secret door is opening for you</p>
-        </div>
+        </div><!-- End Notification Section -->
     </div>
     <script> 
        
@@ -74,7 +78,7 @@
             document.getElementById('generate-display').value = generateCode;
         })
 
-        // Match display Function
+        // Matcher  display Function
         function matchGetNumber(number){ 
             let matchNumber = number;
             let matchDisplayNumber = document.getElementById('match-display');
@@ -136,12 +140,15 @@
                 document.getElementById('alert').style.marginTop = '30px';
                 document.getElementById('success-notify').style.display = 'none';
                 document.getElementById('error-notify').style.display = 'none';
+
+                document.getElementById('try-count').innerText = 3;
             }
             else if(matchDisplayValue== ''){ 
                 document.querySelector('.text-paragrap').innerText = 'Plase Input Match Number';
                 document.getElementById('alert').style.marginTop = '30px';
                 document.getElementById('success-notify').style.display = 'none';
                 document.getElementById('error-notify').style.display = 'none';
+                document.getElementById('try-count').innerText = 3;
             }
 
         }
